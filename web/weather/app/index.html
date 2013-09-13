@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" ng-app="weather">
+<head>
+  <meta charset="utf-8">
+  <title>Google Phone Gallery</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+<!--
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+-->
+
+
+  <script src="lib/jquery/jquery.js"></script>
+  <script src="lib/jquery-ui/ui/jquery-ui.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-resource.js"></script>
+  <script src="lib/angular-ui-date/src/date.js"></script>
+  <script src="lib/ui-bootstrap-tpls-0.4.0.js"></script>
+  <script src="Highcharts-3.0.2/js/highcharts.js"></script>
+  <script src="Highcharts-3.0.2/js/modules/exporting.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+</head>
+<body>
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <p class="brand">Birdwood Road Weather Station</p>
+    </div>
+  </div>
+</header>
+
+<div style="margin: 32px;"></div>
+
+<div ng-controller="WeatherCtrl">
+  <tabset>
+    <tab heading="Current">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+          <p> </p>
+	  </div>
+        </div>
+        <div class="row">
+          <div class="span4">
+            <div class="well">
+            <h3>Outdoor Temperature</h3>
+            <p><table><tr><td rowspan="2" style="font-size:40px; border-bottom:2px solid gray">{{weather.Outdoor_Temp}}&deg;C</td><td width="20px" rowspan="2"></td><td style="font-size:12px">L {{weatherMin.Outdoor_Temp}}&deg;C</td></tr><tr><td style="font-size:12px">H {{weatherMax.Outdoor_Temp}}&deg;C</td></tr></table></p>
+            <h3>Outdoor Humidity</h3>
+            <p>{{weather.Outdoor_Humidity}}%</p>
+    
+            <h3>Indoor Temperature</h3>
+            <p style="font-size:18px">{{weather.Indoor_Temp}}&deg;C</p>
+            <h3>Indoor Humidity</h3>
+            <p>{{weather.Indoor_Humidity}}%</p>
+            </div>
+          </div>
+
+          <div class="span4">
+            <div class="well" style="background-color:lightblue">
+            <h3>Dew point</h3>
+            <p>{{weather.Dew_Point}}&deg;C</p>
+    
+            <h3>Wind Chill</h3>
+            <p>{{weather.Wind_Chill}}&deg;C</p>
+    
+            <h3>Pressure</h3>
+            <p>{{weather.Abs_Pressure}}mb</p>
+            </div>
+          </div>
+    
+          <div class="span4">
+            <div class="well">
+            <h3>Wind Average</h3>
+            <p><img src="icons/{{weather.Wind_Direction_Text}}_0.gif"> {{weather.Wind_Direction_Text}} {{weather.Wind_Avg}} m/s</p>
+    
+            <h3>Wind Gust</h3>
+            <p>{{weather.Wind_Gust}} m/s</p>
+    
+            <h3>Rain</h3>
+            <p>{{weather.Rain_Since_Last}} mm</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span12">
+            <div class="well" style="background-color:pink">
+            <h3>Date and Time</h3>
+            <p>{{weather.Recorded}}</p>
+            </div>
+          </div>
+        </div>
+
+        <button ng-click="reload()">Refresh</button>
+      </div>
+    </tab>
+    <tab heading="Temperature History">
+      <div>
+        <div id="chart1" style="width:100%; height:400px;"></div>
+
+	<input ng-model="startDate" ui-date>
+	<input ng-model="endDate" ui-date>
+
+        <br>
+
+        <button ng-click="reload(startDate,endDate)">Refresh</button>
+      </div>
+    </tab>
+    <tab heading="Humidity History">
+      <div>
+        <div id="chart2" style="width:100%; height:400px;"></div>
+
+	<input ng-model="startDate" ui-date>
+	<input ng-model="endDate" ui-date>
+
+        <br>
+
+        <button ng-click="reload(startDate,endDate)">Refresh</button>
+      </div>
+    </tab>
+    <tab heading="Pressure History">
+      <div>
+        <div id="chart3" style="width:100%; height:400px;"></div>
+
+	<input ng-model="startDate" ui-date>
+	<input ng-model="endDate" ui-date>
+
+        <br>
+
+        <button ng-click="reload(startDate,endDate)">Refresh</button>
+      </div>
+    </tab>
+    <tab heading="Wind Speed History">
+      <div>
+        <div id="chart4" style="width:100%; height:400px;"></div>
+
+	<input ng-model="startDate" ui-date>
+	<input ng-model="endDate" ui-date>
+
+        <br>
+
+        <button ng-click="reload(startDate,endDate)">Refresh</button>
+      </div>
+    </tab>
+    <tab heading="Rain Fall">
+      <div>
+        <div id="chart5" style="width:100%; height:400px;"></div>
+
+	<input ng-model="startDate" ui-date>
+	<input ng-model="endDate" ui-date>
+
+        <br>
+
+        <button ng-click="reload(startDate,endDate)">Refresh</button>
+      </div>
+    </tab>
+  </tabset>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p style="text-align:center">Chris Jobson 2013</p>
+  </div>
+</footer>
+</body>
+</html>

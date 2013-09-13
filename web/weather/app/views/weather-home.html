@@ -1,0 +1,71 @@
+<header class="jumbotron subhead">
+  <div class="container">
+    <h1>Current Weather</h1>
+  </div>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="span12">
+    <p> </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      <div class="well">
+      <h3>Outdoor Temperature</h3>
+      <p><table><tr><td rowspan="2" style="font-size:40px; border-bottom:2px solid gray">{{weather.Outdoor_Temp}}&deg;C</td><td width="20px" rowspan="2"></td><td style="font-size:12px">L {{weatherMin.Outdoor_Temp}}&deg;C</td></tr><tr><td style="font-size:12px">H {{weatherMax.Outdoor_Temp}}&deg;C</td></tr></table></p>
+      <h3>Outdoor Humidity</h3>
+      <p>{{weather.Outdoor_Humidity}}%</p>
+    
+      <h3>Indoor Temperature</h3>
+      <p style="font-size:18px">{{weather.Indoor_Temp}}&deg;C</p>
+      <h3>Indoor Humidity</h3>
+      <p>{{weather.Indoor_Humidity}}%</p>
+      </div>
+    </div>
+    
+    <div class="span4">
+      <div class="well" style="background-color:lightblue">
+      <h3>Dew point</h3>
+      <p>{{weather.Dew_Point}}&deg;C</p>
+    
+      <h3>Wind Chill</h3>
+      <p>{{weather.Wind_Chill}}&deg;C</p>
+    
+      <h3>Pressure</h3>
+      <p>{{weather.Abs_Pressure}}mb</p>
+      </div>
+    </div>
+    
+    <div class="span4">
+      <div class="well">
+      <h3>Wind Average</h3>
+      <p><img src="icons/{{weather.Wind_Direction_Text}}_0.gif"> {{weather.Wind_Direction_Text}} {{weather.Wind_Avg}} m/s</p>
+    
+      <h3>Wind Gust</h3>
+      <p>{{weather.Wind_Gust}} m/s</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <div class="well" style="background-color:pink">
+      <h3>Date and Time</h3>
+      <p>{{weather.Recorded}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <br>
+        <p align="center">
+          <button ng-click="reload()">Refresh</button>
+          <button ng-click="setPath('/history/temperature'); log('hello')">History</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
