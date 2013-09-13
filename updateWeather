@@ -186,7 +186,7 @@ if (items[34] != row[0]):
     con.close()
     sys.exit(1)
     
-# now we find the end of the matches and start insertsing ...
+# now we find the end of the matches and start inserting ...
 if noInsert:
     print "No inserts to be executed"
     if log:
@@ -204,6 +204,13 @@ if debug:
             
 cur.execute("DELETE FROM weather WHERE ID = %s", (maxId))
         
+# get the last record for the rain ticks
+cur.execute("SELECT Rain_Ticks from weather WHERE ID = (SELECT max(ID) from weather)")
+rows = cur.fetchall()
+
+row = rows[0]
+lastRainTicks = row[0]
+
 if debug:
     print "INSERT into weather ..."
     if log:
@@ -222,7 +229,18 @@ while i < len(data):
     items[1] = datetime.strptime(items[1].strip(), '%Y-%m-%d %H:%M:%S').isoformat()
     items[2] = datetime.strptime(items[2].strip(), '%Y-%m-%d %H:%M:%S').isoformat()
     items[34] = int(items[34].strip(), 16)
+    
+    newRainTicks = int(items[18].strip())
+    diffTicks = newRainTicks - lastRainTicks
+    rainSinceLast = diffTicks * 0.3
             
+    # 012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+    # 0 Index             1 Transfer          2 Recorded          3 Reading_Interval  4 Indoor_Humidty    5 Indoor_Temp
+    # 6 Outdoor_Humidity  7 Outdoor_Temp      8 Dew_Point         9 Wind_Chill       10 Abs_Pressure     11 Rel_Pressure
+    #12 Wind_Avg         13 Wind_Avg_Beaufort14 Wind_Gust        15 Wind_Gust_Beaufor16 Wind_Direction   17 Wind_Direction_Text
+    #18 Rain_Ticks       19 Rain_Total       20 Rain_Since_Last  21 Rain_Last_Hour   22 Rain_Last_24     23 Rain_Last_7Days
+    #24 Rain_Last_30Days 25 Rain_Last_Year   26 Status_0         27 Status_1         28 Status_2         29 Status_3
+    #30 Status_4         31 Status_5         32 Status_6         33 Status_7         34 Data_Address
     cur.execute("INSERT INTO weather(`Index`, Transfer, Recorded, Reading_Interval, Indoor_Humidity, Indoor_Temp, \
 Outdoor_Humidity, Outdoor_Temp, Dew_Point, Wind_Chill, Abs_Pressure, Rel_Pressure, Wind_Avg, Wind_Avg_Beaufort, \
 Wind_Gust, Wind_Gust_Beaufort, Wind_Direction, Wind_Direction_Text, Rain_Ticks, Rain_Total, Rain_Since_Last, \
@@ -232,9 +250,10 @@ Status_3, Status_4, Status_5, Status_6, Status_7, Data_Address) VALUES(%s, %s, %
 (items[0].strip(), items[1], items[2], items[3].strip(), items[4].strip(), items[5].strip(), \
 items[6].strip(), items[7].strip(), items[8].strip(), items[9].strip(), items[10].strip(), items[11].strip(), items[12].strip(), \
 items[13].strip(), items[14].strip(), items[15].strip(), items[16].strip(), items[17].strip(), items[18].strip(), items[19].strip(), \
-items[20].strip(), items[21].strip(), items[22].strip(), items[23].strip(), items[24].strip(), items[25].strip(), items[26].strip(), \
+str(rainSinceLast), items[21].strip(), items[22].strip(), items[23].strip(), items[24].strip(), items[25].strip(), items[26].strip(), \
 items[27].strip(), items[28].strip(), items[29].strip(), items[30].strip(), items[31].strip(), items[32].strip(), items[33].strip(), items[34]))
                     
+    lastRainTicks = newRainTicks
     curIndex += 1
     i += 1
  
