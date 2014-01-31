@@ -16,6 +16,7 @@ function WeatherCtrl($scope, $location, WeatherData) {
     var d7 = [];
     var d8 = [];
     var d9 = [];
+    var d10 = [];
     
     var options1 = {
         chart: {
@@ -181,7 +182,7 @@ function WeatherCtrl($scope, $location, WeatherData) {
         },
         yAxis: {
             title: {
-                text: 'Rain Fall'
+                text: 'Rain Fall mm'
             }
         },
         plotOptions: {
@@ -198,7 +199,11 @@ function WeatherCtrl($scope, $location, WeatherData) {
             data: d9,
             name: 'Rain Fall'
             //type: 'spline'
-        }]
+        },{
+	    data: d10,
+	    name: 'Total Rain Fall',
+	    type: 'spline'
+	}]
     };
 
     $scope.reload = function (startDate, endDate) {
@@ -218,7 +223,9 @@ function WeatherCtrl($scope, $location, WeatherData) {
             d7.length = 0;
             d8.length = 0;
             d9.length = 0;
+            d10.length = 0;
             
+	    var sum = 0;
             for (var i = 0; i < tempHistory.length; i++) {
                 d1.push([Date.parse(tempHistory[i].Recorded), tempHistory[i].Indoor_Temp]);
                 d2.push([Date.parse(tempHistory[i].Recorded), tempHistory[i].Outdoor_Temp]);
@@ -229,6 +236,7 @@ function WeatherCtrl($scope, $location, WeatherData) {
                 d7.push([Date.parse(tempHistory[i].Recorded), tempHistory[i].Abs_Pressure]);
                 d8.push([Date.parse(tempHistory[i].Recorded), tempHistory[i].Wind_Avg]);
                 d9.push([Date.parse(tempHistory[i].Recorded), tempHistory[i].Rain_Since_Last]);
+                d10.push([Date.parse(tempHistory[i].Recorded), sum = sum + tempHistory[i].Rain_Since_Last]);
             }
             
             var chart1 = new Highcharts.Chart(options1);
